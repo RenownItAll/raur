@@ -1,0 +1,15 @@
+# Ignore the source clones that makepkg creates
+src/**/yabridge/
+src/**/yabridgectl/
+
+# Ignore the build/package folders if they appear
+src/**/src/
+src/**/pkg/
+
+# Ignore DB backups
+x86_64/**/*.old
+
+# Ignore the Fish modules
+modules/
+
+**/*.log

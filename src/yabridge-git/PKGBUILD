@@ -1,0 +1,52 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=yabridge-git
+_pkgname=yabridge
+pkgver=5.1.1.r20.ga69072ef
+pkgrel=2
+pkgdesc="Modern way to use Windows VST2/3/CLAP plugins on Linux (Wine 10+ compatible)"
+arch=('x86_64')
+url="https://github.com/robbert-vdh/yabridge"
+license=('GPL3')
+depends=('wine' 'libxcb' 'tomlplusplus')
+makedepends=('git' 'meson' 'ninja' 'cmake' 'asio' 'bitsery' 'function2')
+provides=('yabridge')
+conflicts=('yabridge')
+options=('!buildflags' '!strip') # Critical for Wine/Meson stability
+source=('git+https://github.com/robbert-vdh/yabridge')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$_pkgname"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$_pkgname"
+
+  # Update subprojects
+  meson subprojects update --types git || true
+
+  # Setup build - we disable bitbridge (-Dbitbridge=false) to fix the Wine 10 error
+  meson setup build \
+    --cross-file cross-wine.conf \
+    --buildtype=release \
+    -Dbitbridge=false \
+    --unity=off
+
+  ninja -C build
+}
+
+package() {
+  cd "$_pkgname/build"
+
+  # Install 64-bit host
+  install -dm755 "$pkgdir/usr/bin"
+  install yabridge-host.exe{,.so} "$pkgdir/usr/bin"
+
+  # Install libraries
+  install -dm755 "$pkgdir/usr/lib"
+  for fmt in vst2 vst3 clap; do
+    install libyabridge-chainloader-${fmt}.so "$pkgdir/usr/lib"
+    install libyabridge-${fmt}.so "$pkgdir/usr/lib"
+  done
+}

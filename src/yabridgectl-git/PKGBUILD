@@ -1,0 +1,39 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=yabridgectl-git
+_pkgname=yabridgectl
+_yabridge=yabridge
+pkgver=5.1.1.r20.ga69072ef
+pkgrel=2
+pkgdesc="Optional utility to help set up and manage yabridge"
+arch=('x86_64')
+url="https://github.com/robbert-vdh/yabridge"
+license=('GPL3')
+depends=('gcc-libs')
+makedepends=('git' 'cargo')
+provides=('yabridgectl')
+conflicts=('yabridgectl' 'yabridge-bin')
+source=('git+https://github.com/robbert-vdh/yabridge')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$_yabridge"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd "$_yabridge/tools/yabridgectl"
+  # This pre-fetches dependencies, which is cleaner for automated builds
+  cargo fetch --target "$CARCH-unknown-linux-gnu"
+}
+
+build() {
+  cd "$_yabridge/tools/yabridgectl"
+  # Removed --locked because git versions often have slightly out-of-sync lockfiles
+  export CARGO_TARGET_DIR=target
+  cargo build --release --offline --all-features
+}
+
+package() {
+  cd "$_yabridge/tools/yabridgectl"
+  install -Dm755 "target/release/$_pkgname" -t "$pkgdir/usr/bin"
+}
