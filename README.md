@@ -2,10 +2,9 @@
 
 👋 welcome!
 
-this repo contains my personal collection of modified
-[AUR](https://aur.archlinux.org/) packages. I tweak PKGBUILDs to my
-liking and pre-compile the binaries so I don't have to wait on the AUR every
-time I update my setup.
+this repo is my personal collection of modified [AUR](https://aur.archlinux.org/)
+packages. I edit the PKGBUILDs to my liking and pre-compile the binaries so I
+don't have to sit around waiting on the AUR each time new updates are released.
 
 ## installation
 
