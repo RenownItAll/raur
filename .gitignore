@@ -9,7 +9,5 @@ src/**/pkg/
 # Ignore DB backups
 x86_64/**/*.old
 
-# Ignore the Fish modules
-modules/
-
+# Ignore build logs
 **/*.log
