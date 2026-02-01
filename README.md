@@ -20,5 +20,5 @@ to add this repo to your system, append the following block to your
 ```ini
 [raur]
 SigLevel = Optional TrustAll
-Server = [https://raw.githubusercontent.com/RenownItAll/raur/main/x86_64](https://raw.githubusercontent.com/RenownItAll/raur/main/x86_64)
+Server = https://raw.githubusercontent.com/RenownItAll/raur/main/x86_64
 ```
