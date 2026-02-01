@@ -52,7 +52,6 @@ for pkg in $PACKAGES
     end
 
     echo "Finished $pkg"
-    hr
 end
 
 echo "Updating repository database..."
