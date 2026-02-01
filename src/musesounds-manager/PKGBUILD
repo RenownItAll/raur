@@ -1,0 +1,33 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=musesounds-manager
+pkgver=2.1.1.912
+pkgrel=1
+pkgdesc="Manager for MuseSounds, used with MuseScore 4"
+arch=('x86_64')
+url="https://musescore.org/en/musesounds"
+license=('custom')
+depends=('qt5-base' 'nss' 'libxss' 'alsa-lib' 'hicolor-icon-theme')
+source=("https://muse-cdn.com/Muse_Sounds_Manager_x64.tar.gz")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir"
+  ls -d Muse_Sounds_Manager_x64_* | sed 's/Muse_Sounds_Manager_x64_//'
+}
+
+package() {
+  cd "$srcdir/Muse_Sounds_Manager_x64_$pkgver"
+
+  # Install binary and libs
+  install -Dm755 bin/muse-sounds-manager "$pkgdir/usr/bin/muse-sounds-manager"
+  install -Dm644 bin/*.so "$pkgdir/usr/bin/"
+
+  # Install desktop entry
+  install -Dm644 res/muse-sounds-manager.desktop "$pkgdir/usr/share/applications/muse-sounds-manager.desktop"
+
+  # Install icons
+  for size in 48x48 64x64 128x128 256x256; do
+    install -Dm644 "res/icons/hicolor/$size/apps/muse-sounds-manager.png" \
+      "$pkgdir/usr/share/icons/hicolor/$size/apps/muse-sounds-manager.png"
+  done
+}
