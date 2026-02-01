@@ -2,8 +2,10 @@
 
 👋 welcome!
 
-this is my personal repo for Arch Linux packages. it contains pre-compiled
-binaries of the stuff I use daily.
+this repo contains my personal collection of modified
+[AUR](https://aur.archlinux.org/) packages. I tweak PKGBUILDs to my liking and
+pre-compile the binaries so I don't have to wait on the AUR every time I update
+my setup.
 
 ## installation
 
