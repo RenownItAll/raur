@@ -1,0 +1,20 @@
+pkgbase = librescore-bin
+	pkgdesc = Download sheet music from MuseScore.com for free (AppImage wrapper)
+	pkgver = 6.0.21
+	pkgrel = 5
+	url = https://github.com/LibreScore/app-librescore
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = librsvg
+	depends = alsa-lib
+	depends = nss
+	depends = gtk3
+	depends = glibc
+	depends = zlib
+	depends = hicolor-icon-theme
+	options = !strip
+	options = !buildflags
+	source = librescore-bin-6.0.21.AppImage::https://github.com/LibreScore/app-librescore/releases/download/v6.0.21/LibreScore.AppImage
+	sha256sums = a192bda328e8ab1f3284c02c1021d595becca5b40fd654da8d44d5188d32e98b
+
+pkgname = librescore-bin

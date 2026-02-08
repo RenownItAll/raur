@@ -1,0 +1,17 @@
+pkgbase = termshot-bin
+	pkgdesc = A tool to take screenshots of terminal command output
+	pkgver = 0.6.0
+	pkgrel = 1
+	url = https://www.github.com/homeport/termshot
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	depends = glibc
+	provides = termshot
+	conflicts = termshot
+	source_x86_64 = termshot-bin-0.6.0-x86_64.tar.gz::https://www.github.com/homeport/termshot/releases/download/v0.6.0/termshot_0.6.0_linux_amd64.tar.gz
+	sha256sums_x86_64 = d40d65d6088167388ce78d6427fe18dc935b4d4732f284c4213cb0f1f076452e
+	source_aarch64 = termshot-bin-0.6.0-aarch64.tar.gz::https://www.github.com/homeport/termshot/releases/download/v0.6.0/termshot_0.6.0_linux_arm64.tar.gz
+	sha256sums_aarch64 = 46501930b0824dffd0ca3172fed744f3c7a41037590723a0f013d9579d43aa0c
+
+pkgname = termshot-bin

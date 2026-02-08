@@ -1,0 +1,41 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=yabridge-git
+_pkgname=yabridge
+pkgver=5.1.1.r20.ga69072ef
+pkgrel=3
+pkgdesc="A modern bridge for running Windows VST2, VST3, and CLAP plugins on Linux"
+arch=('x86_64')
+url="https://github.com/robbert-vdh/yabridge"
+license=('GPL-3.0-or-later')
+depends=('wine' 'libxcb' 'tomlplusplus' 'glibc' 'gcc-libs' 'bash')
+makedepends=('git' 'meson' 'ninja' 'cmake' 'asio' 'bitsery' 'function2')
+provides=('yabridge')
+conflicts=('yabridge')
+options=('!buildflags' '!strip')
+install=yabridge.install
+source=("git+${url}")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$_pkgname"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$srcdir/$_pkgname"
+  meson subprojects update --types git || true
+  meson setup build --cross-file cross-wine.conf --buildtype=release -Dbitbridge=false --unity=off
+  ninja $NINJAFLAGS -C build
+}
+
+package() {
+  cd "$srcdir/$_pkgname/build"
+  install -dm755 "$pkgdir/usr/bin"
+  install yabridge-host.exe{,.so} "$pkgdir/usr/bin"
+
+  install -dm755 "$pkgdir/usr/lib"
+  for fmt in vst2 vst3 clap; do
+    install libyabridge-chainloader-${fmt}.so "$pkgdir/usr/lib"
+    install libyabridge-${fmt}.so "$pkgdir/usr/lib"
+  done
+}

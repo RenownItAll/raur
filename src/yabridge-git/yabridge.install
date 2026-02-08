@@ -1,0 +1,5 @@
+post_upgrade() {
+  cat <<EOF
+After upgrading yabridge, run 'yabridgectl sync' to update your plugin bridges.
+EOF
+}

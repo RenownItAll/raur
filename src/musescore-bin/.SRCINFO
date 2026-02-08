@@ -1,0 +1,25 @@
+pkgbase = musescore-bin
+	pkgdesc = MuseScore Studio notation software (AppImage wrapper)
+	pkgver = 4.6.5
+	pkgrel = 7
+	url = https://musescore.org
+	arch = x86_64
+	groups = pro-audio
+	license = GPL-3.0-only
+	depends = alsa-lib
+	depends = libxrender
+	depends = libxtst
+	depends = hicolor-icon-theme
+	depends = glibc
+	depends = zlib
+	depends = fuse2
+	provides = musescore
+	conflicts = musescore
+	noextract = musescore-bin-4.6.5.AppImage
+	options = !strip
+	options = !buildflags
+	options = !debug
+	source = musescore-bin-4.6.5.AppImage::https://github.com/musescore/MuseScore/releases/download/v4.6.5/MuseScore-Studio-4.6.5.253511702-x86_64.AppImage
+	sha256sums = 193daa0ea18bcfa90a47145a842275b8069b7b2b8d153e562b15fab5fe50fcaf
+
+pkgname = musescore-bin

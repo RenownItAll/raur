@@ -1,0 +1,18 @@
+pkgbase = yabridgectl-git
+	pkgdesc = Optional utility to help set up and manage yabridge.
+	pkgver = 5.1.1.r20.ga69072ef
+	pkgrel = 3
+	url = https://github.com/robbert-vdh/yabridge
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = git
+	makedepends = cargo
+	depends = gcc-libs
+	depends = glibc
+	provides = yabridgectl
+	conflicts = yabridgectl
+	conflicts = yabridge-bin
+	source = git+https://github.com/robbert-vdh/yabridge
+	sha256sums = SKIP
+
+pkgname = yabridgectl-git

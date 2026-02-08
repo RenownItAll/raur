@@ -1,0 +1,20 @@
+# Build
+*.sh
+*.pacrepo.conf
+build/
+src/*/src/
+src/*/pkg/
+
+# Binaries and downloads 
+*.AppImage
+*.tar.gz
+*.pkg.tar.zst
+*.pkg.tar.zst.sig
+
+# Local repo (hosted on GitHub Releases, not local)
+x86_64/
+
+# Other
+.gpg-key-id
+*.log
+*.bak

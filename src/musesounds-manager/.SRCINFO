@@ -1,0 +1,22 @@
+pkgbase = musesounds-manager
+	pkgdesc = Manager for MuseSounds, used with MuseScore 4
+	pkgver = 2.1.1.912
+	pkgrel = 2
+	url = https://musescore.org/en/musesounds
+	arch = x86_64
+	license = LicenseRef-custom
+	depends = qt5-base
+	depends = nss
+	depends = libxss
+	depends = alsa-lib
+	depends = hicolor-icon-theme
+	depends = glibc
+	depends = gcc-libs
+	depends = fontconfig
+	depends = zlib
+	options = !strip
+	options = !buildflags
+	source = musesounds-manager-2.1.1.912.tar.gz::https://muse-cdn.com/Muse_Sounds_Manager_x64.tar.gz
+	sha256sums = 7e376eac0a8e6a2c3ca94626ee83bcb711c22abac64afbe7980c4b53ce08812c
+
+pkgname = musesounds-manager

@@ -1,0 +1,79 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=musescore-bin
+_pkgname=musescore
+pkgver=4.6.5
+_buildver=253511702
+pkgrel=7
+pkgdesc="MuseScore Studio notation software (AppImage wrapper)"
+arch=('x86_64')
+url="https://musescore.org"
+license=('GPL-3.0-only')
+groups=('pro-audio')
+depends=('alsa-lib' 'libxrender' 'libxtst' 'hicolor-icon-theme' 'glibc' 'zlib' 'fuse2')
+provides=('musescore')
+conflicts=('musescore')
+options=('!strip' !buildflags '!debug')
+
+_appimage="MuseScore-Studio-${pkgver}.${_buildver}-$CARCH.AppImage"
+_appname="mscore"
+
+source=("${pkgname}-${pkgver}.AppImage::https://github.com/musescore/MuseScore/releases/download/v${pkgver}/${_appimage}")
+noextract=("${pkgname}-${pkgver}.AppImage")
+sha256sums=('193daa0ea18bcfa90a47145a842275b8069b7b2b8d153e562b15fab5fe50fcaf')
+
+prepare() {
+  chmod +x "${pkgname}-${pkgver}.AppImage"
+  ./${pkgname}-${pkgver}.AppImage --appimage-extract >/dev/null
+}
+
+build() {
+  sed -i -E "s|Exec=.*|Exec=env DESKTOPINTEGRATION=false /usr/bin/${_appname} %U|" \
+    "squashfs-root/org.musescore.MuseScore4portable.desktop"
+
+  sed -i -E "s|Name=MuseScore Studio.*|Name=MuseScore Studio|" \
+    "squashfs-root/org.musescore.MuseScore4portable.desktop"
+
+  sed -i 's/musescore4portable/musescore/g' "squashfs-root/org.musescore.MuseScore4portable.desktop"
+
+  if grep -q "StartupWMClass" "squashfs-root/org.musescore.MuseScore4portable.desktop"; then
+    sed -i -E "s|StartupWMClass=.*|StartupWMClass=mscore4portable|" \
+      "squashfs-root/org.musescore.MuseScore4portable.desktop"
+  else
+    echo "StartupWMClass=mscore4portable" >>"squashfs-root/org.musescore.MuseScore4portable.desktop"
+  fi
+
+  sed -i 's/musescore4portable/musescore/g' "squashfs-root/share/mime/packages/musescore4portable.xml"
+
+  chmod -R a-x+rX squashfs-root/
+}
+
+package() {
+  install -Dm755 "${srcdir}/${pkgname}-${pkgver}.AppImage" "${pkgdir}/opt/${pkgname}/${pkgname}.AppImage"
+
+  install -dm755 "${pkgdir}/usr/bin"
+  ln -s "/opt/${pkgname}/${pkgname}.AppImage" "${pkgdir}/usr/bin/${_appname}"
+
+  install -Dm644 "${srcdir}/squashfs-root/org.musescore.MuseScore4portable.desktop" \
+    "${pkgdir}/usr/share/applications/${_appname}.desktop"
+
+  install -dm755 "${pkgdir}/usr/share"
+  cp -dr --no-preserve=ownership "${srcdir}/squashfs-root/share/icons" "${pkgdir}/usr/share/"
+
+  for _dir in "${pkgdir}/usr/share/icons/hicolor/"*"/mimetypes"; do
+    if [ -d "$_dir" ]; then
+      pushd "$_dir" >/dev/null
+      for _ext in png svg; do
+        _src="application-x-musescore4portable+xml.${_ext}"
+        if [ -e "$_src" ]; then
+          ln -sf "$_src" "application-x-musescore.${_ext}"
+          ln -sf "$_src" "application-x-musescore+xml.${_ext}"
+          ln -sf "$_src" "musescore.${_ext}"
+        fi
+      done
+      popd >/dev/null
+    fi
+  done
+
+  install -Dm644 "${srcdir}/squashfs-root/share/mime/packages/musescore4portable.xml" \
+    "${pkgdir}/usr/share/mime/packages/${_appname}.xml"
+}

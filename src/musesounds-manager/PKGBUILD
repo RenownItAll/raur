@@ -1,0 +1,29 @@
+# Maintainer: Renowned <64113367+RenownItAll@users.noreply.github.com>
+pkgname=musesounds-manager
+pkgver=2.1.1.912
+pkgrel=2
+pkgdesc="Manager for MuseSounds instrument libraries for MuseScore 4"
+arch=('x86_64')
+url="https://musescore.org/en/musesounds"
+license=('LicenseRef-custom')
+depends=('qt5-base' 'nss' 'libxss' 'alsa-lib' 'hicolor-icon-theme' 'glibc' 'gcc-libs' 'fontconfig' 'zlib')
+options=('!strip' '!buildflags')
+source=("${pkgname}-${pkgver}.tar.gz::https://muse-cdn.com/Muse_Sounds_Manager_x64.tar.gz")
+sha256sums=('7e376eac0a8e6a2c3ca94626ee83bcb711c22abac64afbe7980c4b53ce08812c')
+
+package() {
+  cd "$srcdir/Muse_Sounds_Manager_x64_"*
+
+  install -Dm755 bin/muse-sounds-manager "$pkgdir/usr/bin/muse-sounds-manager"
+  install -Dm644 bin/*.so -t "$pkgdir/usr/lib/"
+
+  install -Dm644 res/muse-sounds-manager.desktop "$pkgdir/usr/share/applications/muse-sounds-manager.desktop"
+
+  for size in 48 64 128 256; do
+    install -Dm644 "res/icons/hicolor/${size}x${size}/apps/muse-sounds-manager.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/muse-sounds-manager.png"
+  done
+
+  install -dm755 "$pkgdir/usr/share/licenses/$pkgname"
+  echo "Custom license. See $url for terms." >"$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
